@@ -61,3 +61,23 @@ CREATE TABLE `blog_tag` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
 
+
+-- --------------------------------
+-- Table structure for user_user
+-- --------------------------------
+CREATE TABLE  `user_user` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+     `name` varchar(100) DEFAULT '' COMMENT '用户名称',
+     `avatar` varchar(255) DEFAULT '' COMMENT '头像',
+     `phone` varchar(25) DEFAULT '' COMMENT '电话',
+     `unionid` varchar(255) DEFAULT '' COMMENT 'uid',
+     `openid` varchar(255) DEFAULT '' COMMENT 'openid',
+     `code` varchar(255) DEFAULT '' COMMENT 'code',
+     `gender` varchar(25) DEFAULT '' COMMENT '性别',
+     `username` varchar(50) DEFAULT '' COMMENT '用户名',
+     `Password` varchar(255) DEFAULT '' COMMENT '密码',
+     `created_at` datetime DEFAULT '' COMMENT '创建时间',
+     PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户管理';
+
+

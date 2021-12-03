@@ -4,7 +4,7 @@ var MsgFlags = map[int]string{
 	SUCCESS:                         "ok",
 	ERROR:                           "fail",
 	INVALID_PARAMS:                  "请求参数错误",
-	ERROR_EXIST_TAG:                 "已存在该标签名称",
+	//ERROR_EXIST_TAG:                 "已存在该标签名称",
 	ERROR_EXIST_TAG_FAIL:            "获取已存在标签失败",
 	ERROR_NOT_EXIST_TAG:             "该标签不存在",
 	ERROR_GET_TAGS_FAIL:             "获取所有标签失败",
@@ -30,6 +30,7 @@ var MsgFlags = map[int]string{
 	ERROR_UPLOAD_SAVE_IMAGE_FAIL:    "保存图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FAIL:   "检查图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT: "校验图片错误，图片格式或大小有问题",
+	ERROR_CREATE_USER_FAIL: "添加用户失败",
 }
 
 // GetMsg get error information based on Code

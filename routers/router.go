@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/EDDYCJY/go-gin-example/routers/api/login"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,13 +32,20 @@ func InitRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
 
+	apiLogin := r.Group("/api/login")
+	// 微信用户登录
+	apiLogin.PUT("/login", login.LoginMobileUser)
+
+
 	apiv1 := r.Group("/api/v1")
+	apiv1.POST("/articles", v1.AddArticle)
+	apiv1.POST("/tags", v1.AddTag)
 	apiv1.Use(jwt.JWT())
 	{
 		//获取标签列表
 		apiv1.GET("/tags", v1.GetTags)
 		//新建标签
-		apiv1.POST("/tags", v1.AddTag)
+		//apiv1.POST("/tags", v1.AddTag)
 		//更新指定标签
 		apiv1.PUT("/tags/:id", v1.EditTag)
 		//删除指定标签
@@ -52,7 +60,7 @@ func InitRouter() *gin.Engine {
 		//获取指定文章
 		apiv1.GET("/articles/:id", v1.GetArticle)
 		//新建文章
-		apiv1.POST("/articles", v1.AddArticle)
+
 		//更新指定文章
 		apiv1.PUT("/articles/:id", v1.EditArticle)
 		//删除指定文章

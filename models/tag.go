@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type Tag struct {
@@ -11,6 +12,7 @@ type Tag struct {
 	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
 	State      int    `json:"state"`
+	CreatedAt  time.Time	`json:"created_at"`
 }
 
 // ExistTagByName checks if there is a tag with the same name
@@ -30,10 +32,12 @@ func ExistTagByName(name string) (bool, error) {
 
 // AddTag Add a Tag
 func AddTag(name string, state int, createdBy string) error {
+	nowTime := time.Now()
 	tag := Tag{
 		Name:      name,
 		State:     state,
 		CreatedBy: createdBy,
+		CreatedAt: nowTime,
 	}
 	if err := db.Create(&tag).Error; err != nil {
 		return err

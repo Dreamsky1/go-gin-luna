@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type User struct {
@@ -16,7 +17,7 @@ type User struct {
 	Gender   string    `json:"gender"`
 	Username string 	`json:"username"`
 	Password string 	`json:"password"`
-	//CratedAt time.Time `json:"crated_at"`
+	CratedAt time.Time `json:"crated_at"`
 }
 // check
 func CheckWeixinUser(unionid, openid string) (bool, error) {
@@ -47,7 +48,13 @@ func CreateUserByUnionId(userParam map[string]interface{}) error {
 		Gender: userParam["gender"].(string),
 		Username: userParam["username"].(string),
 		Password: userParam["password"].(string),
+		CratedAt: time.Now(),
 	}
+	//result := db.Create(&user) // 将数据指针传递给 Create
+	//
+	//user.ID              // 返回插入数据的主键
+	//result.Error         // 返回错误
+	//result.RowsAffected // 返回插入记录数
 
 	if err := db.Create(&user).Error; err != nil {
 		return err

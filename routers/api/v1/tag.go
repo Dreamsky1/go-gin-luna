@@ -1,11 +1,10 @@
 package v1
 
 import (
-	"net/http"
-
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
+	"net/http"
 
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
@@ -75,6 +74,7 @@ func AddTag(c *gin.Context) {
 		form AddTagForm
 	)
 
+	// 判断传的参数是否合规
 	httpCode, errCode := app.BindAndValid(c, &form)
 	if errCode != e.SUCCESS {
 		appG.Response(httpCode, errCode, nil)

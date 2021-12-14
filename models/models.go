@@ -12,7 +12,7 @@ import (
 )
 
 var db *gorm.DB
-
+// 这边时间选择的是时间戳
 type Model struct {
 	ID         int `gorm:"primary_key" json:"id"`
 	CreatedOn  int `json:"created_on"`

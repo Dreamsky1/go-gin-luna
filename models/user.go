@@ -19,6 +19,7 @@ type User struct {
 	Password string 	`json:"password"`
 	CratedAt time.Time `json:"crated_at"`
 }
+
 // check
 func CheckWeixinUser(unionid, openid string) (bool, error) {
 	var user User

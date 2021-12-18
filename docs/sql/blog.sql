@@ -76,8 +76,35 @@ CREATE TABLE  `user_user` (
      `gender` varchar(25) DEFAULT '' COMMENT '性别',
      `username` varchar(50) DEFAULT '' COMMENT '用户名',
      `Password` varchar(255) DEFAULT '' COMMENT '密码',
-     `created_at` datetime DEFAULT '' COMMENT '创建时间',
+     `created_at` datetime NOT NULL COMMENT '创建时间',
      PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户管理';
 
 
+-- --------------------------------
+-- Table structure for category_service
+-- --------------------------------
+
+CREATE TABLE  `blog_category` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(100) DEFAULT '' COMMENT '分类名称',
+      `type` int(10)  DEFAULT 0 COMMENT '分类类型',
+      `created_by` int(10) DEFAULT 0 COMMENT '创建人的id',
+      `image` varchar(255) DEFAULT '' COMMENT '图片',
+      `created_at` datetime NOT NULL COMMENT '创建时间',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分类';
+
+
+
+CREATE TABLE  `blog_bill` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `user_id` int(100) NOT NULL COMMENT '用户id',
+      `category_id` int(100)  NOT NULL COMMENT '分类类型',
+      `amount` int(255) not null comment '金额',
+      `remark` text COMMENT '备注',
+      `image` varchar(255) DEFAULT '' COMMENT '图片',
+      `created_at` datetime NOT NULL COMMENT '创建时间',
+      `update_at` datetime NOT NULL COMMENT '更新时间',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账单';

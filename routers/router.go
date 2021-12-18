@@ -15,6 +15,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/qrcode"
 	"github.com/EDDYCJY/go-gin-example/pkg/upload"
 	"github.com/EDDYCJY/go-gin-example/routers/api"
+	"github.com/EDDYCJY/go-gin-example/routers/api/bill"
 	"github.com/EDDYCJY/go-gin-example/routers/api/v1"
 )
 
@@ -36,9 +37,25 @@ func InitRouter() *gin.Engine {
 	// 微信用户登录
 	apiLogin.PUT("/login", login.LoginMobileUser)
 
+	// 账单
+	apiBill := r.Group("/api/bill")
+	apiBill.Use(jwt.JWT())
+	{
+		// 创建分类
+		apiBill.PUT("/category", bill.CreatedCategory)
+		// 获得所有的分类
+
+
+
+		// 创建账单
+		apiBill.PUT("/bill", bill.Put)
+		// 删除账单
+		apiBill.DELETE("/bill", bill.Delete)
+		// 修改账单
+	}
 
 	apiv1 := r.Group("/api/v1")
-	apiv1.POST("/articles", v1.AddArticle)
+	//apiv1.POST("/articles", v1.AddArticle)
 	//apiv1.POST("/tags", v1.AddTag)
 	apiv1.Use(jwt.JWT())
 	{
@@ -60,7 +77,7 @@ func InitRouter() *gin.Engine {
 		//获取指定文章
 		apiv1.GET("/articles/:id", v1.GetArticle)
 		//新建文章
-
+		apiv1.POST("/articles", v1.AddArticle)
 		//更新指定文章
 		apiv1.PUT("/articles/:id", v1.EditArticle)
 		//删除指定文章

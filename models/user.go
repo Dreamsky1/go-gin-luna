@@ -17,7 +17,7 @@ type User struct {
 	Gender   string    `json:"gender"`
 	Username string 	`json:"username"`
 	Password string 	`json:"password"`
-	CratedAt time.Time `json:"crated_at"`
+	CreatedAt time.Time `json:"crated_at"`
 }
 
 // check
@@ -49,7 +49,7 @@ func CreateUserByUnionId(userParam map[string]interface{}) error {
 		Gender: userParam["gender"].(string),
 		Username: userParam["username"].(string),
 		Password: userParam["password"].(string),
-		CratedAt: time.Now(),
+		CreatedAt: time.Now(),
 	}
 	//result := db.Create(&user) // 将数据指针传递给 Create
 	//

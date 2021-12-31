@@ -33,5 +33,6 @@ func (user *User) CreateUserByUnionId() error {
 		"username": user.Username,
 		"password": user.Password,
 	}
+	// 这里在用户登录之后，就给用户去创建一个userAccount
 	return models.CreateUserByUnionId(userParam)
 }

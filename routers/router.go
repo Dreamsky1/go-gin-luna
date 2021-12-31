@@ -16,6 +16,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/upload"
 	"github.com/EDDYCJY/go-gin-example/routers/api"
 	"github.com/EDDYCJY/go-gin-example/routers/api/bill"
+	"github.com/EDDYCJY/go-gin-example/routers/api/user_account"
 	"github.com/EDDYCJY/go-gin-example/routers/api/v1"
 )
 
@@ -52,6 +53,20 @@ func InitRouter() *gin.Engine {
 		// 删除账单
 		apiBill.DELETE("/bill", bill.Delete)
 		// 修改账单
+	}
+
+	// 积分、预算
+	apiUserAccount := r.Group("/api/account")
+	apiUserAccount.Use(jwt.JWT())
+	{
+		// 创建账户
+		apiUserAccount.PUT("", user_account.Put)
+
+		// 修改预算
+		apiUserAccount.POST("/budget", user_account.PostBudget)
+
+		// 修改积分
+		apiUserAccount.POST("/integral", user_account.PostIntegral)
 	}
 
 	apiv1 := r.Group("/api/v1")

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/EDDYCJY/go-gin-example/routers/api/login"
+	"github.com/EDDYCJY/go-gin-example/routers/api/user_account"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,6 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/upload"
 	"github.com/EDDYCJY/go-gin-example/routers/api"
 	"github.com/EDDYCJY/go-gin-example/routers/api/bill"
-	"github.com/EDDYCJY/go-gin-example/routers/api/user_account"
 	"github.com/EDDYCJY/go-gin-example/routers/api/v1"
 )
 

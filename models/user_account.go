@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/EDDYCJY/go-gin-example/service/user_account_service"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -47,7 +46,7 @@ func ExistUserAccount(userId int) (bool, error) {
 }
 
 func UpdateUserAccount(userId int, data interface{}) error {
-	if err := db.Model(&UserAccount{}).Where("user_id = ?", user_account_service.UserAccount{}).Updates(data).Error; err != nil {
+	if err := db.Model(&UserAccount{}).Where("user_id = ?", userId).Updates(data).Error; err != nil {
 		return err
 	}
 

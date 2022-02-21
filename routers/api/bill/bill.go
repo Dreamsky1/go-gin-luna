@@ -19,7 +19,7 @@ type billForm struct {
 	Image    string  `form:"image"`
 }
 
-// 创建账单
+// 创建账单 ，
 func Put(c *gin.Context)  {
 	var (
 		appG = app.Gin{C: c}

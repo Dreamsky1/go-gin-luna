@@ -36,6 +36,33 @@ func CheckWeixinUser(unionid, openid string) (bool, error) {
 	return false, nil
 }
 
+// checkUsername
+func CheckUsername(username string) (bool, error) {
+	var user User
+	err := db.Select("id").Where(User{Username: username}).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		fmt.Println("check_err", err)
+		return false, err
+	}
+
+	if user.ID > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+func CreateUser(userParam map[string]interface{}) error {
+	user := User {
+		Username: userParam["username"].(string),
+		Password: userParam["password"].(string),
+		CreatedAt: time.Now(),
+	}
+	if err := db.Create(&user).Error; err != nil {
+		return err
+	}
+	return nil
+}
 
 // create user
 func CreateUserByUnionId(userParam map[string]interface{}) error {

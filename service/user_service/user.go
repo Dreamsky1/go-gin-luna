@@ -20,6 +20,18 @@ type User struct {
 func (user *User) CheckUser() (bool, error) {
 	return models.CheckWeixinUser(user.UnionId, user.OpenId)
 }
+func (user *User) CheckUserByUsername() (bool, error) {
+	return models.CheckUsername(user.Username)
+}
+
+func (user *User) CreateUser() error {
+	userParam := map[string]interface{}{
+		"username": user.Username,
+		"password": user.Password,
+	}
+
+	return models.CreateUser(userParam)
+}
 
 func (user *User) CreateUserByUnionId() error {
 	userParam := map[string]interface{}{

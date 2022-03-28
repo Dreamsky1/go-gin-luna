@@ -33,7 +33,7 @@ func LoginMobileUser(ctx *gin.Context) {
 
 	httpCode, errCode := app.BindAndValid(ctx, &form)
 	fmt.Println("httpCode", httpCode, "errCode", errCode)
-	if errCode != e.SUCCESS {
+	if errCode != e.INVALID_PARAMS {
 		appG.Response(httpCode, errCode, "解析参数失败")
 		return
 	}

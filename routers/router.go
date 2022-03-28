@@ -36,7 +36,9 @@ func InitRouter() *gin.Engine {
 
 	apiLogin := r.Group("/api/login")
 	// 微信用户登录
-	apiLogin.PUT("/login", login.LoginMobileUser)
+	apiLogin.PUT("/mobile", login.LoginMobileUser)
+	// 普通用户登录
+	apiLogin.PUT("/login", login.Login)
 
 	// 账单
 	apiBill := r.Group("/api/bill")
@@ -45,7 +47,6 @@ func InitRouter() *gin.Engine {
 		// 创建分类
 		apiBill.PUT("/category", bill.CreatedCategory)
 		// 获得所有的分类
-
 
 
 		// 创建账单

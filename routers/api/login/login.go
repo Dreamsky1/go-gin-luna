@@ -1,7 +1,6 @@
 package login
 
 import (
-	"fmt"
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
 	"github.com/EDDYCJY/go-gin-example/pkg/util"
@@ -10,15 +9,29 @@ import (
 	"net/http"
 )
 
+type UserForm struct {
+	Username      string    `form:"username" valid:"Required;MaxSize(100)"`
+	Password      string    `form:"password" valid:"Required;MaxSize(100)"`
+}
+
 func Login(ctx *gin.Context)  {
-	fmt.Print("输出进来了这个")
-	var appG = app.Gin{C: ctx}
-	username := ctx.Query("username")
-	password  := ctx.Query("password")
+	var (
+		appG = app.Gin{C: ctx}
+		form UserForm
+	)
+
+	httpCode, errCode := app.BindAndValid(ctx, &form)
+	if errCode != e.SUCCESS {
+		appG.Response(httpCode, errCode, nil)
+		return
+	}
+	username := form.Username
+	password  := form.Password
+
 
 	userService := user_service.User{
-		Username: username,
-		Password: password,
+		Username: form.Username,
+		Password: form.Password,
 	}
 	isExist, err := userService.CheckUserByUsername()
 
@@ -43,5 +56,6 @@ func Login(ctx *gin.Context)  {
 
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
 		"token": token,
+		"username": username,
 	})
 }

@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/EDDYCJY/go-gin-example/routers/api/bill"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/qrcode"
 	"github.com/EDDYCJY/go-gin-example/pkg/upload"
 	"github.com/EDDYCJY/go-gin-example/routers/api"
+	"github.com/EDDYCJY/go-gin-example/routers/api/category"
 	"github.com/EDDYCJY/go-gin-example/routers/api/v1"
 )
 
@@ -30,6 +32,34 @@ func InitRouter() *gin.Engine {
 	r.GET("/auth", api.GetAuth)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
+
+	apiCategory := r.Group("/api/category")
+	//apiCategory.Use(jwt.JWT())
+	{
+		//获取标签列表
+		apiCategory.GET("/categories", category.GetCategories)
+		//新建标签
+		apiCategory.POST("/categories", category.AddCategory)
+		//更新指定标签
+		apiCategory.PUT("/categories/:id", category.EditCategory)
+		//删除指定标签
+		apiCategory.DELETE("/categories", category.DeleteCategory)
+	}
+
+	apiBill := r.Group("/api/bill")
+	//apiBill.Use(jwt.JWT())
+	{
+		// 获取多个账单
+		apiBill.GET("/bills", bill.GetBills)
+		// 获得单个账单
+		apiBill.GET("/bill", bill.GetBill)
+		// 更新指定的账单
+		apiBill.POST("/bill", bill.EditBill)
+		// 新增账单
+		apiBill.PUT("/bill", bill.AddBill)
+		//删除账单
+		apiBill.DELETE("/bill", bill.DeleteBill)
+	}
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())

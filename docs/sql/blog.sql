@@ -62,7 +62,18 @@ CREATE TABLE `blog_tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
 
 -- ----------------------------
--- Table structure for blog_auth
+-- Table structure for 一级分类
+-- ----------------------------
+CREATE TABLE `bill_type_category` (
+     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+     `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
+    `name` varchar(100) DEFAULT '' COMMENT '一级分类名',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for 用户
 -- ----------------------------
 DROP TABLE IF EXISTS `bill_user`;
 CREATE TABLE `bill_user` (

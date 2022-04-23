@@ -16,15 +16,15 @@ import (
 
 //获取单个账单
 func GetBill(c *gin.Context) {
-	id := com.StrTo(c.Param("id")).MustInt()
+	id := com.StrTo(c.Query("id")).MustInt()
 
 	valid := validation.Validation{}
 
 	valid.Min(id, 1, "id").Message("ID必须大于0")
 	code := e.INVALID_PARAMS
 
-	var data interface {}
-	if ! valid.HasErrors() {
+	var data interface{}
+	if !valid.HasErrors() {
 		if models.ExistBillByID(id) {
 			data = models.GetBill(id)
 			code = e.SUCCESS
@@ -38,9 +38,9 @@ func GetBill(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code" : code,
-		"msg" : e.GetMsg(code),
-		"data" : data,
+		"code": code,
+		"msg":  e.GetMsg(code),
+		"data": data,
 	})
 }
 
@@ -51,14 +51,14 @@ func GetBills(c *gin.Context) {
 	valid := validation.Validation{}
 
 	var categoryId int = -1
-	if arg :=  c.Query("category_id"); arg != "" {
+	if arg := c.Query("category_id"); arg != "" {
 		categoryId = com.StrTo(arg).MustInt()
 		maps["category_id"] = categoryId
 		valid.Min(categoryId, 1, "tag_id").Message("标签ID必须大于0")
 	}
 
 	code := e.INVALID_PARAMS
-	if ! valid.HasErrors() {
+	if !valid.HasErrors() {
 		code = e.SUCCESS
 
 		data["lists"] = models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
@@ -69,30 +69,21 @@ func GetBills(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code" : code,
-		"msg" : e.GetMsg(code),
-		"data" : data,
+		"code": code,
+		"msg":  e.GetMsg(code),
+		"data": data,
 	})
 }
 
 type AddBillForm struct {
-	TypeId int  `form:"type_id" valid:"Required;Min(1)"`
-	CategoryId int `form:"category_id" valid:"Required;Min(1)"`
-	Amount int `form:"amount" valid:"Required;Min(1)"`
-	Remark  string `form:"remark" valid:"Required;MaxSize(65535)"`
+	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
+	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
+	Amount     int    `form:"amount" valid:"Required;Min(1)"`
+	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
 
 // 新增账单
 func AddBill(c *gin.Context) {
-	//categoryId := com.StrTo(c.Query("category_id")).MustInt()
-	//typeId := com.StrTo(c.Query("type_id")).MustInt()
-	//remark := c.Query("remark")
-	//amount := com.StrTo(c.Query("amount")).MustInt()
-	//
-	//valid := validation.Validation{}
-	//valid.Min(categoryId, 1, "category_id").Message("分类ID必须大于0")
-	//valid.Min(typeId, 1, "type_id").Message("类型ID必须大于0")
-
 	// 使用form去使用
 	var (
 		appG = app.Gin{C: c}
@@ -118,32 +109,51 @@ func AddBill(c *gin.Context) {
 	}
 	code = e.SUCCESS
 
-	// 使用valid的方法
-	//if !valid.HasErrors() {
-	//	data := make(map[string]interface{})
-	//	data["category_id"] = categoryId
-	//	data["type_id"] = typeId
-	//	data["remark"] = remark
-	//	data["amount"] = amount
-	//	err := models.AddBill(data)
-	//	if err != nil {
-	//		code = e.SUCCESS
-	//	}
-	//} else {
-	//	for _, err := range valid.Errors {
-	//		log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
-	//	}
-	//}
-
 	c.JSON(http.StatusOK, gin.H{
-		"code" : code,
-		"msg" : e.GetMsg(code),
-		"data" : make(map[string]interface{}),
+		"code": code,
+		"msg":  e.GetMsg(code),
+		"data": make(map[string]interface{}),
 	})
+}
+
+type EditBillForm struct {
+	ID         int    `form:"id" valid:"Required;Min(1)"`
+	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
+	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
+	Amount     int    `form:"amount" valid:"Required;Min(1)"`
+	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
 
 //修改账单
 func EditBill(c *gin.Context) {
+	var (
+		appG = app.Gin{C: c}
+		form EditBillForm
+	)
+	httpCode, errCode := app.BindAndValid(c, &form)
+	if errCode != e.SUCCESS {
+		appG.Response(httpCode, errCode, nil)
+		return
+	}
+
+	exists := models.ExistBillByID(form.ID)
+
+	if !exists {
+		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_ARTICLE, nil)
+		return
+	}
+	err := models.EditBill(form.ID, map[string]interface{}{
+		"type_id":     form.TypeId,
+		"amount":      form.Amount,
+		"category_id": form.CategoryId,
+		"remark":      form.Remark,
+	})
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EDIT_ARTICLE_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
 //删除账单

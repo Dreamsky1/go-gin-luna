@@ -33,17 +33,24 @@ func InitRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
 
+	// 分类****
 	apiCategory := r.Group("/api/category")
 	//apiCategory.Use(jwt.JWT())
 	{
 		//获取标签列表
 		apiCategory.GET("/categories", category.GetCategories)
 		//新建标签
-		apiCategory.POST("/categories", category.AddCategory)
+		apiCategory.PUT("/categories", category.AddCategory)
 		//更新指定标签
 		apiCategory.PUT("/categories/:id", category.EditCategory)
 		//删除指定标签
 		apiCategory.DELETE("/categories", category.DeleteCategory)
+
+		// 一级分类
+		// 获得一级分类
+		apiCategory.GET("/type/category", category.GetAllTypeCategories)
+		// 创建一级分类
+		apiCategory.PUT("/type/category", category.AddType)
 	}
 
 	apiBill := r.Group("/api/bill")

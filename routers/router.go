@@ -16,6 +16,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/upload"
 	"github.com/EDDYCJY/go-gin-example/routers/api"
 	"github.com/EDDYCJY/go-gin-example/routers/api/category"
+	"github.com/EDDYCJY/go-gin-example/routers/api/user"
 	"github.com/EDDYCJY/go-gin-example/routers/api/v1"
 )
 
@@ -32,6 +33,11 @@ func InitRouter() *gin.Engine {
 	r.GET("/auth", api.GetAuth)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
+
+	// 注册
+	r.PUT("/register", user.Register)
+	// 登录
+	r.POST("/login", user.Login)
 
 	// 分类****
 	apiCategory := r.Group("/api/category")

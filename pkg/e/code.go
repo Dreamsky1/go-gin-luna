@@ -41,5 +41,5 @@ const (
 	// 添加分类失败
 	ERROR_ADD_CATEGORY_FALIL = 40001
 
-	//
+	// 登录
 )

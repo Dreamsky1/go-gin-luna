@@ -61,6 +61,19 @@ CREATE TABLE `blog_tag` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标签管理';
 
+
+-- ----------------------------
+-- Table structure for 用户user
+-- ----------------------------
+CREATE TABLE `bill_user` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `username` varchar(50) DEFAULT '' COMMENT '账号',
+ `password` varchar(50) DEFAULT '' COMMENT '密码',
+ `signature` varchar(100) DEFAULT '' COMMENT '个性签名',
+ `integral`  int(10) DEFAULT '0' COMMENT '个人积分',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Table structure for 一级分类
 -- ----------------------------

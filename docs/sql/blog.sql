@@ -71,6 +71,9 @@ CREATE TABLE `bill_user` (
  `password` varchar(50) DEFAULT '' COMMENT '密码',
  `avatar`    varchar(255) DEFAULT '' COMMENT '头像',
  `signature` varchar(100) DEFAULT '' COMMENT '个性签名',
+ `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+ `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+ `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
  `integral`  int(10) DEFAULT '0' COMMENT '个人积分',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

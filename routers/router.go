@@ -35,9 +35,9 @@ func InitRouter() *gin.Engine {
 	r.POST("/upload", api.UploadImage)
 
 	// 注册
-	r.PUT("/register", user.Register)
+	r.PUT("api/register", user.Register)
 	// 登录
-	r.POST("/login", user.Login)
+	r.POST("api/login", user.Login)
 
 	// 分类***********
 	apiCategory := r.Group("/api/category")

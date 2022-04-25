@@ -8,8 +8,8 @@ import (
 type TypeCategory struct {
 	Model
 
-	Name       string      `json:"name"`
-	Categories []*Category `json:"categories"`
+	Name             string      `json:"name"`
+	SecondCategories []*Category `json:"secondCategories"`
 }
 
 func (typeCategory *TypeCategory) BeforeCreate(scope *gorm.Scope) error {
@@ -29,7 +29,7 @@ func GetTypeCategories(pageNum int, pageSize int, maps interface{}) ([]*TypeCate
 		//typeId2Category[typeCategory.ID] =
 		var categories []*Category
 		db.Where("type_id = ?", typeCategory.ID).Find(&categories)
-		typeCategory.Categories = categories
+		typeCategory.SecondCategories = categories
 	}
 
 	if err != nil && err != gorm.ErrRecordNotFound {

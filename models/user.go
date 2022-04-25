@@ -1,19 +1,23 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type User struct {
-	ID       int    `gorm:"primary_key" json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Signature string  `json:"signature"`
-	Integral  int `json:"integral"`
+	Model
+
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Signature string `json:"signature"`
+	Integral  int    `json:"integral"`
 }
 
 // 检查是否有该用户
 func CheckUser(username, password string) (error, User, bool) {
 	var user User
-	err := db.Select("id").Where(User{
+	err := db.Where(User{
 		Username: username,
 		Password: password,
 	}).First(&user).Error
@@ -28,8 +32,9 @@ func CheckUser(username, password string) (error, User, bool) {
 
 	return err, user, false
 }
+
 // 注册
-func RegisterUser(username, password string)  error {
+func RegisterUser(username, password string) error {
 	err := db.Create(&User{
 		Username: username,
 		Password: password,
@@ -37,5 +42,17 @@ func RegisterUser(username, password string)  error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (user *User) BeforeCreate(scope *gorm.Scope) error {
+	scope.SetColumn("CreatedOn", time.Now().Unix())
+
+	return nil
+}
+
+func (user *User) BeforeUpdate(scope *gorm.Scope) error {
+	scope.SetColumn("ModifiedOn", time.Now().Unix())
+
 	return nil
 }

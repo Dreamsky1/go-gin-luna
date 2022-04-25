@@ -10,11 +10,11 @@ import (
 )
 
 type userFrom struct {
-	Username string `valid:"Required; MaxSize(50)"`
-	Password string `valid:"Required; MaxSize(50)"`
+	Username string `form:"username" valid:"Required; MaxSize(50)"`
+	Password string `form:"password" valid:"Required; MaxSize(50)"`
 }
 
-func Register(c *gin.Context)  {
+func Register(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}
 		form userFrom
@@ -50,11 +50,11 @@ func Register(c *gin.Context)  {
 }
 
 type loginForm struct {
-	Username string `valid:"Required; MaxSize(50)"`
-	Password string `valid:"Required; MaxSize(50)"`
+	Username string `form:"username" valid:"Required; MaxSize(50)"`
+	Password string `form:"password" valid:"Required; MaxSize(50)"`
 }
 
-func Login(c *gin.Context)  {
+func Login(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}
 		form loginForm
@@ -72,7 +72,6 @@ func Login(c *gin.Context)  {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-
 
 	// 不存在该用户
 	if !exist {

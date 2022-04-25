@@ -41,5 +41,9 @@ const (
 	// 添加分类失败
 	ERROR_ADD_CATEGORY_FALIL = 40001
 
-	// 登录
+	// 注册
+	ERROR_EXIST_USER = 50001 // 注册失败，用户已经存在
+	ERROR_CREATE_USER_FAIL = 50002 // 注册失败
+	ERROP_NOT_EXIST_USER = 50003 // 不存在用户
+
 )

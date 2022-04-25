@@ -30,6 +30,12 @@ var MsgFlags = map[int]string{
 	ERROR_UPLOAD_SAVE_IMAGE_FAIL:    "保存图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FAIL:   "检查图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT: "校验图片错误，图片格式或大小有问题",
+
+
+	// 注册失败，用户已经存在
+	ERROR_EXIST_USER: "用户已经存在",
+	ERROR_CREATE_USER_FAIL: "创建用户失败",
+	ERROP_NOT_EXIST_USER: "用户不存在",
 }
 
 // GetMsg get error information based on Code

@@ -4,6 +4,7 @@ import (
 	"github.com/EDDYCJY/go-gin-example/models"
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
+	"github.com/EDDYCJY/go-gin-example/pkg/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,21 +25,28 @@ func Register(c *gin.Context)  {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-	data := make(map[string]interface{})
 
-	err, user := models.CheckUser(form.Username, form.Password)
+	err, _, exist := models.CheckUser(form.Username, form.Password)
 	if err != nil {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-	code := e.SUCCESS
-	data["user"] = user
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": data,
-	})
+	// 存在用户
+	if exist {
+		appG.Response(http.StatusUnauthorized, e.ERROR_EXIST_USER, nil)
+		return
+	}
+
+	// 注册
+	err = models.RegisterUser(form.Username, form.Password)
+	if err != nil {
+		appG.Response(http.StatusUnauthorized, e.ERROR_CREATE_USER_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+
 }
 
 type loginForm struct {
@@ -49,7 +57,7 @@ type loginForm struct {
 func Login(c *gin.Context)  {
 	var (
 		appG = app.Gin{C: c}
-		form userFrom
+		form loginForm
 	)
 
 	httpCode, errCode := app.BindAndValid(c, &form)
@@ -57,4 +65,29 @@ func Login(c *gin.Context)  {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
+	data := make(map[string]interface{})
+	err, user, exist := models.CheckUser(form.Username, form.Password)
+
+	if err != nil {
+		appG.Response(httpCode, errCode, nil)
+		return
+	}
+
+
+	// 不存在该用户
+	if !exist {
+		appG.Response(http.StatusUnauthorized, e.ERROP_NOT_EXIST_USER, nil)
+		return
+	}
+
+	token, err := util.GenerateToken(form.Username, form.Password)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_TOKEN, nil)
+		return
+	}
+
+	data["user"] = user
+	data["token"] = token
+
+	appG.Response(http.StatusOK, e.SUCCESS, data)
 }

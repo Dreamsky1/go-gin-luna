@@ -11,7 +11,7 @@ type User struct {
 }
 
 // 检查是否有该用户
-func CheckUser(username, password string) (error, User) {
+func CheckUser(username, password string) (error, User, bool) {
 	var user User
 	err := db.Select("id").Where(User{
 		Username: username,
@@ -19,14 +19,14 @@ func CheckUser(username, password string) (error, User) {
 	}).First(&user).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return err, user
+		return err, user, false
 	}
 
 	if user.ID > 0 {
-		return nil, user
+		return nil, user, true
 	}
 
-	return err, user
+	return err, user, false
 }
 // 注册
 func RegisterUser(username, password string)  error {

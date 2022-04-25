@@ -39,22 +39,22 @@ func InitRouter() *gin.Engine {
 	// 登录
 	r.POST("/login", user.Login)
 
-	// 分类****
+	// 分类***********
 	apiCategory := r.Group("/api/category")
-	//apiCategory.Use(jwt.JWT())
+	//apiCategory.Use(jwt.JWT())z暂时不用
 	{
 		//获取标签列表
 		apiCategory.GET("/categories", category.GetCategories)
 		//新建标签
-		apiCategory.PUT("/categories", category.AddCategory)
+		apiCategory.PUT("/category", category.AddCategory)
 		//更新指定标签
 		apiCategory.PUT("/categories/:id", category.EditCategory)
 		//删除指定标签
 		apiCategory.DELETE("/categories", category.DeleteCategory)
 
 		// 一级分类
-		// 获得一级分类
-		apiCategory.GET("/type/category", category.GetAllTypeCategories)
+		// 获得一级分类并且携带了二级分类
+		apiCategory.GET("/type/categories", category.GetAllTypeCategories)
 		// 创建一级分类
 		apiCategory.PUT("/type/category", category.AddType)
 	}

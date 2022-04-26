@@ -99,6 +99,7 @@ CREATE TABLE `bill_bill` (
     `type_id` int(10) unsigned DEFAULT '0' COMMENT '分类类型的ID',
     `category_id` int(10) unsigned DEFAULT '0' COMMENT '分类的ID',
     `category_name` varchar(100) DEFAULT '' COMMENT '分类名称',
+    `accounting_date` int(14) DEFAULT '0' COMMENT '记账日期',
     `amount` int(10) unsigned DEFAULT '0' COMMENT '价格',
     `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
@@ -118,20 +119,6 @@ CREATE TABLE `bill_category` (
     `type_id` int(10) unsigned NOT NULL COMMENT '分类类型',
     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用、1为启用',
     `image` varchar(225) DEFAULT '' COMMENT '图片名称',
-    `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
-    `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
-    `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='一级分类';
-
--- ----------------------------
--- Table structure for bill_type
--- 支出和收入,
--- ----------------------------
-
-CREATE TABLE  `bill_category_type` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(100) DEFAULT '' COMMENT '分类类型',
     `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
     `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',

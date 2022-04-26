@@ -13,6 +13,7 @@ type Bill struct {
 	CategoryName string   `json:"category_name"`
 	Amount       int      `json:"amount"`
 	Remark       string   `json:"remark"`
+	AccountingDate int    `json:"accounting_date"`
 	Category     Category `json:"category"`
 }
 
@@ -66,6 +67,7 @@ func AddBill(data map[string]interface{}) error {
 		TypeId:     data["type_id"].(int),
 		Amount:     data["amount"].(int),
 		Remark:     data["remark"].(string),
+		AccountingDate: data["accounting_date"].(int),
 	}).Error; err != nil {
 		return err
 	}

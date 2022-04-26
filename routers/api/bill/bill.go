@@ -61,7 +61,10 @@ func GetBills(c *gin.Context) {
 	if !valid.HasErrors() {
 		code = e.SUCCESS
 
-		data["lists"] = models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
+		bills := models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
+		//for _, bill := range bills {
+		//}
+		data["lists"] = bills
 		data["total"] = models.GetBillTotal(maps)
 	} else {
 		for _, err := range valid.Errors {
@@ -78,6 +81,7 @@ func GetBills(c *gin.Context) {
 type AddBillForm struct {
 	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
 	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
+	AccountingDate int `form:"accounting_date" valid:"Required;Min(1)"`
 	Amount     int    `form:"amount" valid:"Required;Min(1)"`
 	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
@@ -102,6 +106,7 @@ func AddBill(c *gin.Context) {
 	data["type_id"] = form.TypeId
 	data["remark"] = form.Remark
 	data["amount"] = form.Amount
+	data["accounting_date"] = form.AccountingDate
 	err := models.AddBill(data)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, errCode, nil)
@@ -120,6 +125,7 @@ type EditBillForm struct {
 	ID         int    `form:"id" valid:"Required;Min(1)"`
 	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
 	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
+	AccountingDate int `form:"accounting_date" valid:"Required;Min(1)"`
 	Amount     int    `form:"amount" valid:"Required;Min(1)"`
 	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
@@ -147,6 +153,7 @@ func EditBill(c *gin.Context) {
 		"amount":      form.Amount,
 		"category_id": form.CategoryId,
 		"remark":      form.Remark,
+		"accounting_date": form.AccountingDate,
 	})
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EDIT_ARTICLE_FAIL, nil)

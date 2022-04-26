@@ -99,7 +99,7 @@ CREATE TABLE `bill_bill` (
     `type_id` int(10) unsigned DEFAULT '0' COMMENT '分类类型的ID',
     `category_id` int(10) unsigned DEFAULT '0' COMMENT '分类的ID',
     `category_name` varchar(100) DEFAULT '' COMMENT '分类名称',
-    `accounting_date` int(14) DEFAULT '0' COMMENT '记账日期',
+    `accounting_date` int(11) DEFAULT '0' COMMENT '记账日期',
     `amount` int(10) unsigned DEFAULT '0' COMMENT '价格',
     `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
     `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',

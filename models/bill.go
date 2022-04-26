@@ -8,13 +8,13 @@ import (
 type Bill struct {
 	Model
 
-	TypeId       int      `json:"type_id"`
-	CategoryId   int      `json:"category_id"`
-	CategoryName string   `json:"category_name"`
-	Amount       int      `json:"amount"`
-	Remark       string   `json:"remark"`
-	AccountingDate int    `json:"accounting_date"`
-	Category     Category `json:"category"`
+	TypeId         int      `json:"type_id"`
+	CategoryId     int      `json:"category_id"`
+	CategoryName   string   `json:"category_name"`
+	Amount         int      `json:"amount"`
+	Remark         string   `json:"remark"`
+	AccountingDate int      `json:"accounting_date"`
+	Category       Category `json:"category"`
 }
 
 // 判断是否存在
@@ -63,11 +63,11 @@ func EditBill(id int, data interface{}) error {
 // 添加账单
 func AddBill(data map[string]interface{}) error {
 	if err := db.Create(&Bill{
-		CategoryId: data["category_id"].(int),
-		TypeId:     data["type_id"].(int),
-		Amount:     data["amount"].(int),
-		Remark:     data["remark"].(string),
-		AccountingDate: data["accounting_date"].(int),
+		CategoryId:     data["category_id"].(int),
+		TypeId:         data["type_id"].(int),
+		Amount:         data["amount"].(int),
+		Remark:         data["remark"].(string),
+		AccountingDate: int(data["accounting_date"].(int64)),
 	}).Error; err != nil {
 		return err
 	}

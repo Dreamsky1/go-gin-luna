@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/unknwon/com"
 )
@@ -62,8 +63,6 @@ func GetBills(c *gin.Context) {
 		code = e.SUCCESS
 
 		bills := models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
-		//for _, bill := range bills {
-		//}
 		data["lists"] = bills
 		data["total"] = models.GetBillTotal(maps)
 	} else {
@@ -79,11 +78,11 @@ func GetBills(c *gin.Context) {
 }
 
 type AddBillForm struct {
-	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
-	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
-	AccountingDate int `form:"accounting_date" valid:"Required;Min(1)"`
-	Amount     int    `form:"amount" valid:"Required;Min(1)"`
-	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
+	TypeId         int    `form:"type_id" valid:"Required;Min(1)"`
+	CategoryId     int    `form:"category_id" valid:"Required;Min(1)"`
+	AccountingDate string `form:"accounting_date" valid:"Required;MaxSize(65535)"`
+	Amount         int    `form:"amount" valid:"Required;Min(1)"`
+	Remark         string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
 
 // 新增账单
@@ -100,13 +99,18 @@ func AddBill(c *gin.Context) {
 	}
 
 	code := e.INVALID_PARAMS
+	parseTime, errs := time.Parse("2006-01-02 15:04:05", form.AccountingDate)
+	if errs != nil {
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, "出粗哦了")
+		return
+	}
 
 	data := make(map[string]interface{})
 	data["category_id"] = form.CategoryId
 	data["type_id"] = form.TypeId
 	data["remark"] = form.Remark
 	data["amount"] = form.Amount
-	data["accounting_date"] = form.AccountingDate
+	data["accounting_date"] = parseTime.Unix()
 	err := models.AddBill(data)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, errCode, nil)
@@ -122,12 +126,12 @@ func AddBill(c *gin.Context) {
 }
 
 type EditBillForm struct {
-	ID         int    `form:"id" valid:"Required;Min(1)"`
-	TypeId     int    `form:"type_id" valid:"Required;Min(1)"`
-	CategoryId int    `form:"category_id" valid:"Required;Min(1)"`
-	AccountingDate int `form:"accounting_date" valid:"Required;Min(1)"`
-	Amount     int    `form:"amount" valid:"Required;Min(1)"`
-	Remark     string `form:"remark" valid:"Required;MaxSize(65535)"`
+	ID             int    `form:"id" valid:"Required;Min(1)"`
+	TypeId         int    `form:"type_id" valid:"Required;Min(1)"`
+	CategoryId     int    `form:"category_id" valid:"Required;Min(1)"`
+	AccountingDate int    `form:"accounting_date" valid:"Required;Min(1)"`
+	Amount         int    `form:"amount" valid:"Required;Min(1)"`
+	Remark         string `form:"remark" valid:"Required;MaxSize(65535)"`
 }
 
 //修改账单
@@ -149,10 +153,10 @@ func EditBill(c *gin.Context) {
 		return
 	}
 	err := models.EditBill(form.ID, map[string]interface{}{
-		"type_id":     form.TypeId,
-		"amount":      form.Amount,
-		"category_id": form.CategoryId,
-		"remark":      form.Remark,
+		"type_id":         form.TypeId,
+		"amount":          form.Amount,
+		"category_id":     form.CategoryId,
+		"remark":          form.Remark,
 		"accounting_date": form.AccountingDate,
 	})
 	if err != nil {

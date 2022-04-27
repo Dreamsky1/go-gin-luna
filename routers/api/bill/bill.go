@@ -1,6 +1,7 @@
 package bill
 
 import (
+	"fmt"
 	"github.com/EDDYCJY/go-gin-example/models"
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
@@ -55,7 +56,15 @@ func GetBills(c *gin.Context) {
 	if arg := c.Query("category_id"); arg != "" {
 		categoryId = com.StrTo(arg).MustInt()
 		maps["category_id"] = categoryId
-		valid.Min(categoryId, 1, "tag_id").Message("标签ID必须大于0")
+	}
+
+	if time1 := c.Query("time1"); time1 != "" {
+		parseTime, _ := time.Parse("2006-01-02 15:04:05", time1)
+		fmt.Print("测试一下**", parseTime.Unix())
+	}
+	if time2 := c.Query("time2"); time2 != "" {
+		parseTime, _ := time.Parse("2006-01-02 15:04:05", time2)
+		fmt.Print("测试一下**", parseTime)
 	}
 
 	code := e.INVALID_PARAMS

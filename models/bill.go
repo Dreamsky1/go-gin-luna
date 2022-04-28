@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -32,14 +33,19 @@ func ExistBillByID(id int) bool {
 // 获得所有数量
 func GetBillTotal(maps interface{}) (count int) {
 	db.Model(&Bill{}).Where(maps).Count(&count)
-
 	return
 }
 
 // 获得所有的账单 跟 分类有关的, 这个maps是查询条件
-func GetBills(pageNum int, pageSize int, maps interface{}) (bills []Bill) {
-	db.Preload("Category").Where(maps).Offset(pageNum).Limit(pageSize).Find(&bills)
-
+func GetBills(pageNum int, pageSize int, maps map[string]interface{}) (bills []Bill) {
+	if maps["category_id"] != nil {
+		db.Preload("Category").Where("category_id = ? and accounting_date > ? and accounting_date < ?",
+			maps["category_id"], maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
+		return
+	}
+	fmt.Print("输出这个", maps["accounting_date_end"])
+	db.Preload("Category").Where("accounting_date > ? and accounting_date < ?",
+		maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
 	return
 }
 

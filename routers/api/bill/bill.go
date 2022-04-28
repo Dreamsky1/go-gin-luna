@@ -60,12 +60,16 @@ func GetBills(c *gin.Context) {
 
 	if time1 := c.Query("time1"); time1 != "" {
 		parseTime, _ := time.Parse("2006-01-02 15:04:05", time1)
+		maps["accounting_date_start"] = parseTime.Unix()
 		fmt.Print("测试一下**", parseTime.Unix())
 	}
 	if time2 := c.Query("time2"); time2 != "" {
 		parseTime, _ := time.Parse("2006-01-02 15:04:05", time2)
+		maps["accounting_date_end"] = parseTime.Unix()
 		fmt.Print("测试一下**", parseTime)
 	}
+
+	fmt.Print("坎坎坷坷扩0", maps)
 
 	code := e.INVALID_PARAMS
 	if !valid.HasErrors() {
@@ -73,7 +77,7 @@ func GetBills(c *gin.Context) {
 
 		bills := models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
 		data["lists"] = bills
-		data["total"] = models.GetBillTotal(maps)
+		//data["total"] = models.GetBillTotal(maps)
 	} else {
 		for _, err := range valid.Errors {
 			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)

@@ -1,7 +1,6 @@
 package bill
 
 import (
-	"fmt"
 	"github.com/EDDYCJY/go-gin-example/models"
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
@@ -61,21 +60,22 @@ func GetBills(c *gin.Context) {
 	if time1 := c.Query("time1"); time1 != "" {
 		parseTime, _ := time.Parse("2006-01-02 15:04:05", time1)
 		maps["accounting_date_start"] = parseTime.Unix()
-		fmt.Print("测试一下**", parseTime.Unix())
 	}
 	if time2 := c.Query("time2"); time2 != "" {
 		parseTime, _ := time.Parse("2006-01-02 15:04:05", time2)
 		maps["accounting_date_end"] = parseTime.Unix()
-		fmt.Print("测试一下**", parseTime)
 	}
 
-	fmt.Print("坎坎坷坷扩0", maps)
 
 	code := e.INVALID_PARAMS
 	if !valid.HasErrors() {
 		code = e.SUCCESS
 
 		bills := models.GetBills(util.GetPage(c), setting.AppSetting.PageSize, maps)
+		// 这里要包装成service进行处理一下时间的返回
+		//for _, bill := range bills {
+		//	bill.AccountingDate = time.Unix(int64(bill.AccountingDate), 0).Format("2006-01-02 15:04:05")
+		//}
 		data["lists"] = bills
 		//data["total"] = models.GetBillTotal(maps)
 	} else {

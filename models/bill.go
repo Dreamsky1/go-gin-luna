@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -43,7 +42,6 @@ func GetBills(pageNum int, pageSize int, maps map[string]interface{}) (bills []B
 			maps["category_id"], maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
 		return
 	}
-	fmt.Print("输出这个", maps["accounting_date_end"])
 	db.Preload("Category").Where("accounting_date > ? and accounting_date < ?",
 		maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
 	return

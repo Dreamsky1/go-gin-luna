@@ -95,7 +95,7 @@ type AddBillForm struct {
 	CategoryId     int    `form:"category_id" valid:"Required;Min(1)"`
 	AccountingDate string `form:"accounting_date" valid:"Required;MaxSize(65535)"`
 	Amount         int    `form:"amount" valid:"Required;Min(1)"`
-	Remark         string `form:"remark" valid:"Required;MaxSize(65535)"`
+	Remark         string `form:"remark" valid:"MaxSize(65535)"`
 }
 
 // 新增账单
@@ -142,9 +142,9 @@ type EditBillForm struct {
 	ID             int    `form:"id" valid:"Required;Min(1)"`
 	TypeId         int    `form:"type_id" valid:"Required;Min(1)"`
 	CategoryId     int    `form:"category_id" valid:"Required;Min(1)"`
-	AccountingDate int    `form:"accounting_date" valid:"Required;Min(1)"`
+	AccountingDate string `form:"accounting_date" valid:"Required;MaxSize(65535)"`
 	Amount         int    `form:"amount" valid:"Required;Min(1)"`
-	Remark         string `form:"remark" valid:"Required;MaxSize(65535)"`
+	Remark         string `form:"remark" valid:"MaxSize(65535)"`
 }
 
 //修改账单
@@ -165,12 +165,18 @@ func EditBill(c *gin.Context) {
 		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_ARTICLE, nil)
 		return
 	}
+	parseTime, errs := time.Parse("2006-01-02 15:04:05", form.AccountingDate)
+	if errs != nil {
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, "")
+		return
+	}
+
 	err := models.EditBill(form.ID, map[string]interface{}{
 		"type_id":         form.TypeId,
 		"amount":          form.Amount,
 		"category_id":     form.CategoryId,
 		"remark":          form.Remark,
-		"accounting_date": form.AccountingDate,
+		"accounting_date": parseTime.Unix(),
 	})
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EDIT_ARTICLE_FAIL, nil)
@@ -182,4 +188,16 @@ func EditBill(c *gin.Context) {
 
 //删除账单
 func DeleteBill(c *gin.Context) {
+	appG := app.Gin{C: c}
+	valid := validation.Validation{}
+	id := com.StrTo(c.Query("id")).MustInt()
+	valid.Min(id, 1, "id").Message("ID必须大于0")
+	if valid.HasErrors() {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+		return
+	}
+
+	models.DeleteBill(id)
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }

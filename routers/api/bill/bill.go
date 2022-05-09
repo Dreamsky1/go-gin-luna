@@ -76,7 +76,6 @@ func GetBills(c *gin.Context) {
 		maps["accounting_date_end"] = parseTime.Unix()
 	}
 
-
 	code := e.INVALID_PARAMS
 	if !valid.HasErrors() {
 		code = e.SUCCESS
@@ -102,6 +101,7 @@ func GetBills(c *gin.Context) {
 
 type AddBillForm struct {
 	TypeId         int    `form:"type_id" valid:"Required;Min(1)"`
+	UserId         int    `form:"user_id" valid:"Required;Min(1)"`
 	CategoryId     int    `form:"category_id" valid:"Required;Min(1)"`
 	AccountingDate string `form:"accounting_date" valid:"Required;MaxSize(65535)"`
 	Amount         int    `form:"amount" valid:"Required;Min(1)"`
@@ -131,6 +131,7 @@ func AddBill(c *gin.Context) {
 	data := make(map[string]interface{})
 	data["category_id"] = form.CategoryId
 	data["type_id"] = form.TypeId
+	data["user_id"] = form.UserId
 	data["remark"] = form.Remark
 	data["amount"] = form.Amount
 	data["accounting_date"] = parseTime.Unix()

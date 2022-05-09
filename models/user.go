@@ -35,11 +35,12 @@ func CheckUser(username, password string) (error, User, bool) {
 
 // 注册
 func RegisterUser(username, password string) error {
-	err := db.Create(&User{
-		Username: username,
-		Password: password,
-	}).Error
-	if err != nil {
+	if err := db.Create(&User{
+		Username:  username,
+		Password:  password,
+		Signature: "1",
+		Integral:  1,
+	}).Error; err != nil {
 		return err
 	}
 	return nil

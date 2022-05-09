@@ -4,6 +4,7 @@ const (
 	SUCCESS        = 200
 	ERROR          = 500
 	INVALID_PARAMS = 400
+	INVALID_USER   = 401
 
 	ERROR_EXIST_TAG       = 10001
 	ERROR_EXIST_TAG_FAIL  = 10002
@@ -42,8 +43,8 @@ const (
 	ERROR_ADD_CATEGORY_FALIL = 40001
 
 	// 注册
-	ERROR_EXIST_USER = 50001 // 注册失败，用户已经存在
+	ERROR_EXIST_USER       = 50001 // 注册失败，用户已经存在
 	ERROR_CREATE_USER_FAIL = 50002 // 注册失败
-	ERROP_NOT_EXIST_USER = 50003 // 不存在用户
+	ERROP_NOT_EXIST_USER   = 50003 // 不存在用户
 
 )

@@ -47,6 +47,7 @@ func GetBill(c *gin.Context) {
 
 //获取多个账单
 func GetBills(c *gin.Context) {
+	appG := app.Gin{C: c}
 	data := make(map[string]interface{})
 	maps := make(map[string]interface{})
 	valid := validation.Validation{}
@@ -55,6 +56,15 @@ func GetBills(c *gin.Context) {
 	if arg := c.Query("category_id"); arg != "" {
 		categoryId = com.StrTo(arg).MustInt()
 		maps["category_id"] = categoryId
+	}
+
+	userId := com.StrTo(c.Query("user_id")).MustInt()
+	valid.Min(userId, 1, "user_id").Message("UserId必须大于0")
+	maps["user_id"] = userId
+	if valid.HasErrors() {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+		return
 	}
 
 	if time1 := c.Query("time1"); time1 != "" {

@@ -96,6 +96,7 @@ CREATE TABLE `bill_type_category` (
 -- ----------------------------
 CREATE TABLE `bill_bill` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) unsigned NOT NULL COMMENT '用户的ID',
     `type_id` int(10) unsigned DEFAULT '0' COMMENT '分类类型的ID',
     `category_id` int(10) unsigned DEFAULT '0' COMMENT '分类的ID',
     `category_name` varchar(100) DEFAULT '' COMMENT '分类名称',

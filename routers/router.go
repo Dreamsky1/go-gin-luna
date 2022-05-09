@@ -41,7 +41,7 @@ func InitRouter() *gin.Engine {
 
 	// 分类***********
 	apiCategory := r.Group("/api/category")
-	//apiCategory.Use(jwt.JWT())z暂时不用
+	apiCategory.Use(jwt.JWT())
 	{
 		//获取标签列表
 		apiCategory.GET("/categories", category.GetCategories)
@@ -60,7 +60,7 @@ func InitRouter() *gin.Engine {
 	}
 
 	apiBill := r.Group("/api/bill")
-	//apiBill.Use(jwt.JWT())
+	apiBill.Use(jwt.JWT())
 	{
 		// 获取多个账单
 		apiBill.GET("/bills", bill.GetBills)

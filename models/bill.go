@@ -42,8 +42,8 @@ func GetBills(pageNum int, pageSize int, maps map[string]interface{}) (bills []B
 			maps["category_id"], maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
 		return
 	}
-	db.Preload("Category").Where("accounting_date > ? and accounting_date < ?",
-		maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
+	db.Preload("Category").Where("user_id = ? and accounting_date > ? and accounting_date < ?",
+		maps["user_id"], maps["accounting_date_start"], maps["accounting_date_end"]).Offset(pageNum).Limit(pageSize).Find(&bills)
 	return
 }
 

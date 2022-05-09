@@ -9,6 +9,7 @@ type Bill struct {
 	Model
 
 	TypeId         int      `json:"type_id"`
+	UserId         int      `json:"user_id"`
 	CategoryId     int      `json:"category_id"`
 	CategoryName   string   `json:"category_name"`
 	Amount         int      `json:"amount"`
@@ -69,6 +70,7 @@ func AddBill(data map[string]interface{}) error {
 	if err := db.Create(&Bill{
 		CategoryId:     data["category_id"].(int),
 		TypeId:         data["type_id"].(int),
+		UserId:         data["user_id"].(int),
 		Amount:         data["amount"].(int),
 		Remark:         data["remark"].(string),
 		AccountingDate: int(data["accounting_date"].(int64)),

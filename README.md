@@ -69,19 +69,3 @@ Project information and existing API
 
 Listening port is 8000
 Actual pid is 4393
-```
-Swagger doc
-
-
-## Features
-
-- RESTful API
-- Gorm
-- Swagger
-- logging
-- Jwt-go
-- Gin
-- Graceful restart or stop (fvbock/endless)
-- App configurable
-- Cron
-- Redis

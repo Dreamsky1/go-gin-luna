@@ -1,7 +1,6 @@
 # Go Gin
 
-An example of gin contains many useful features
-
+本地需要有go环境，go的安装与配置可以百度。
 
 ## Installation
 ```
